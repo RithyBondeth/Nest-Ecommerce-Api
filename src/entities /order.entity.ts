@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 import { OrderItem } from "./orderItem.entity";
 
@@ -17,7 +17,7 @@ export class Order {
     @JoinColumn({ name: "user_id" })
     user: User
 
-    @OneToMany(() => OrderItem, (orderItem) => orderItem.orders, { cascade: true, eager: true })   
+    @OneToMany(() => OrderItem, (orderItem) => orderItem.order, { cascade: true, eager: true })   
     orderItems: OrderItem[]
 
     @Column({

@@ -13,8 +13,7 @@ export class UserResponseDTO {
     @IsEmail()
     email: string
 
-    @IsString()
-    @IsNotEmpty()
+    @Exclude()
     password: string
 
     @IsUrl()

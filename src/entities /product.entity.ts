@@ -1,10 +1,12 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { ProductImage } from "./productImage.entity";
 import { Category } from "./category.entity";
 import { CartItem } from "./cartItem.entity";
 import { OrderItem } from "./orderItem.entity";
+import { Brand } from "./ brand.entity";
 
 @Entity()
+@Unique(["name"])
 export class Product {
     @PrimaryGeneratedColumn()
     id: number
@@ -25,6 +27,10 @@ export class Product {
     @JoinColumn({ name: "category_id" })
     category: Category
 
+    @ManyToOne(() => Brand, (brand) => brand.products)
+    @JoinColumn({ name: "brand_id" })
+    brand: Brand
+
     @OneToMany(() => ProductImage, (productImage) => productImage.product, { cascade: true })
     images: ProductImage[]
 
@@ -39,4 +45,4 @@ export class Product {
 
     @UpdateDateColumn()
     updatedAt: Date
-}   
+}  

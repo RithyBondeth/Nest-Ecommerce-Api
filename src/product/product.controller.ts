@@ -1,7 +1,12 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductResponseDTO } from './dtos/product-response.dto';
-import { ProductPaginationDTO } from './dtos/product-pagination.dto';
+import { ProductFilterDTO } from './dtos/product-filter.dto';
+import { CreateProductDTO } from './dtos/product-create.dto';
+import { UpdateProductDTO } from './dtos/product-update.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.docorator';
+import { UserRoles } from 'src/entities /user.entity';
 
 @Controller("product")
 export class ProductController {
@@ -9,9 +14,9 @@ export class ProductController {
 
   @Get()
   findAll(
-    @Query() pagination: ProductPaginationDTO
+    @Query() filter: ProductFilterDTO,
   ): Promise<ProductResponseDTO[]> {
-    return this.productService.findAll(pagination)
+    return this.productService.findAll(filter)
   }
 
   @Get("/id/:id")
@@ -24,8 +29,24 @@ export class ProductController {
     return this.productService.findOneByName(productName)
   }
 
+  @Roles(UserRoles.ADMIN)
+  @UseGuards(AuthGuard)
   @Post()
-  create(@Body() body) {
-
+  create(@Body() body: CreateProductDTO) {
+      return this.productService.create(body)
   } 
+
+  @Roles(UserRoles.ADMIN)
+  @UseGuards(AuthGuard)
+  @Put(":id")
+  updateById(@Body() body: UpdateProductDTO, @Param("id", ParseIntPipe) productId: number) {
+    return this.productService.update(body, productId)
+  }
+
+  @Roles(UserRoles.ADMIN)
+  @UseGuards(AuthGuard)
+  @Delete(":id")
+  delete(@Param("id", ParseIntPipe) productId: number) {
+    return this.productService.delete(productId)
+  }
 }

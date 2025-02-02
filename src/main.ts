@@ -13,6 +13,8 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     enableDebugMessages: true
   }))
+  //Enable to fetch data from Client
+  app.enableCors();
   app.setGlobalPrefix("api")
   await app.listen(3000);
 }

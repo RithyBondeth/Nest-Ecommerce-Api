@@ -1,12 +1,14 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { dbConfig } from './config/db.config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ProductModule } from './product/product.module';
+import { AuthModule } from './auth/auth.module';
+import { UserInterceptor } from './user/interceptors/user.interceptor';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -19,12 +21,21 @@ import { ProductModule } from './product/product.module';
       useFactory: dbConfig
     }),
     UserModule,
-    ProductModule
+    ProductModule,
+    AuthModule,
+    CartModule,
+    OrderModule
   ],
-  controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_INTERCEPTOR,
-    useClass: ClassSerializerInterceptor,
-  }],
+  controllers: [],
+  providers: [, 
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: UserInterceptor
+    }
+  ],
 })
 export class AppModule {}

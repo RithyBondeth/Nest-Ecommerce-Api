@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer"
-import { IsArray, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, IsString, ValidateNested } from "class-validator"
+import { IsArray, IsInt, IsNumber, IsPositive, IsString } from "class-validator"
 
 export class ProductResponseDTO {
     @IsNumber()
@@ -18,7 +18,7 @@ export class ProductResponseDTO {
 
     @IsInt()
     @IsPositive()
-    stockQty: number
+    stock: number
 
     @IsArray()
     images: string[]
@@ -28,6 +28,9 @@ export class ProductResponseDTO {
 
     @Exclude()
     updatedAt: Date
+
+    @IsString()
+    brand: string
 
     @IsString()
     category: string

@@ -9,8 +9,8 @@ export class Brand {
     @Column("varchar")
     name: string   
 
-    @OneToMany(() => Product, (product) => product)
-    products: Product[] 
+    @OneToMany(() => Product, (product) => product.brand)
+    products: Product[]
 
     @CreateDateColumn()
     createdAt: Date
